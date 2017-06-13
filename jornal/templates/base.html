@@ -21,15 +21,16 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">ezPaper</a>
+                    <a class="{% if active == 'index' %}active{% endif %} navbar-brand" href="/">ezPaper</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">                        
-                        <li><a href="/register">Registre-se</a></li>
+                        <li {% if active == 'register' %}class="active"{% endif %}><a href="/register">Registre-se</a></li>
                     </ul>
                     
                     <ul class="nav navbar-nav">
-                        <li><a href="/register_worktime">Horários</a></li>
+                        <li {% if active == 'register_worktime' %}class="active"{% endif %}><a href="/register_worktime">Horários</a></li>
+                        <li {% if active == 'user_list' %}class="active"{% endif %}><a href="/user_list">Usuários</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>

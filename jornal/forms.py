@@ -11,7 +11,7 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'telephone', 'email', 'password']
+        fields = ['username', 'telephone', 'email', 'password', 'horario']
 
 class HorarioForm(forms.ModelForm):
     horaInicio = forms.CharField(widget=forms.NumberInput(attrs={'class':'form-control'}), label="Horário de início", max_length=2)

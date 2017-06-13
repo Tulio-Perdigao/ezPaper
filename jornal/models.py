@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Usuario(User):
+    telephone = models.CharField(max_length=20, null=True, blank=True)
     horario = models.ForeignKey('Horario', on_delete=models.SET_NULL, blank=True, null=True)
 
 class Horario(models.Model):
