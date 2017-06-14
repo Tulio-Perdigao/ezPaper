@@ -99,9 +99,54 @@ class HorarioTestCase(TestCase):
 
     def test_can_create(self):        
         post_data = {
-            'horaInicio': 8,
-            'horaFim': 18
+            'horaInicio': 3,
+            'horaFim': 7
         }
         request = self.factory.post('/register_worktime', post_data)
         response = register_worktime(request)        
         self.assertEqual(response.status_code, 201)
+
+    def test_init_hour_low(self):
+        post_data = {
+            'horaInicio': -2,
+            'horaFim': -1
+        }
+        request = self.factory.post('/register_worktime', post_data)
+        response = register_worktime(request)
+        self.assertEqual(response.status_code, 500)
+
+    def test_init_hour_high(self):
+        post_data = {
+            'horaInicio': 25,
+            'horaFim': -1
+        }
+        request = self.factory.post('/register_worktime', post_data)
+        response = register_worktime(request)
+        self.assertEqual(response.status_code, 500)
+
+    def test_end_hour_low(self):
+        post_data = {
+            'horaInicio': 0,
+            'horaFim': -1
+        }
+        request = self.factory.post('/register_worktime', post_data)
+        response = register_worktime(request)
+        self.assertEqual(response.status_code, 500)
+
+    def test_end_hour_high(self):
+        post_data = {
+            'horaInicio': 29,
+            'horaFim': 28
+        }
+        request = self.factory.post('/register_worktime', post_data)
+        response = register_worktime(request)
+        self.assertEqual(response.status_code, 500)
+
+    def test_invalid_pair(self):
+        post_data = {
+            'horaInicio': 4,
+            'horaFim': 3
+        }
+        request = self.factory.post('/register_worktime', post_data)
+        response = register_worktime(request)
+        self.assertEqual(response.status_code, 500)
