@@ -13,8 +13,8 @@ class UserForm(forms.ModelForm):
         fields = ['username', 'email', 'password', 'horario']
 
 class HorarioForm(forms.ModelForm):
-    horaInicio = forms.CharField(widget=forms.NumberInput(attrs={'class':'form-control'}), label="Horário de início", max_length=2)
-    horaFim = forms.CharField(widget=forms.NumberInput(attrs={'class':'form-control'}), label="Horário de término", max_length=2)
+    horaInicio = forms.CharField(widget=forms.NumberInput(attrs={'min': 0, 'max': 23, 'class':'form-control'}), label="Horário de início", max_length=2)
+    horaFim = forms.CharField(widget=forms.NumberInput(attrs={'min': 0, 'max': 23, 'class':'form-control'}), label="Horário de término", max_length=2)
 
     class Meta:
         model = Horario

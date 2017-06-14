@@ -45,12 +45,16 @@ def register_worktime(request):
             horario = Horario()
             horario.horaInicio = horaInicio
             horario.horaFim = horaFim
-            horario.save()
 
-            if horario is not None:                
-                return render(request, 'index.html', { 'active': 'index' }, status=201)
-            else:
+            if horaInicio >= horaFim:
                 return render(request, 'register_worktime.html', { 'active': 'register_worktime', "form": form }, status=500)
+            else:
+                horario.save()
+
+                if horario is not None:                
+                    return render(request, 'index.html', { 'active': 'index' }, status=201)
+                else:
+                    return render(request, 'register_worktime.html', { 'active': 'register_worktime', "form": form }, status=500)
     else:
         return render(request, 'register_worktime.html', { 'active': 'register_worktime', "form": form }, status=400)    
 
