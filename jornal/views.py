@@ -16,21 +16,20 @@ def register(request):
             username = form.cleaned_data['username']                
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            horario = form.cleaned_data['horario']
-            telephone = form.cleaned_data['telephone']
+            horario = form.cleaned_data['horario']            
             
-            if re.match(r'^\w+$"#_\+=[]{},.;/:\\@%&', s):
-
-            user = Usuario.objects.create_user(username=username, email=email, password=password)
-            user.horario = horario
-            user.telephone = telephone
-            user.save()
-            user = authenticate(username=username, password=password)                
-            if user is not None:
-                if user.is_active:
-                    return render(request, 'index.html', { 'active': 'index' }, status=201)
+            if not re.match(r'^\w+$"#_\+=[]{},.;/:\\@%&', s):                
+                user = Usuario.objects.create_user(username=username, email=email, password=password)
+                user.horario = horario
+                user.save()
+                user = authenticate(username=username, password=password)                
+                if user is not None:
+                    if user.is_active:
+                        return render(request, 'index.html', { 'active': 'index' }, status=201)
+                else:
+                    return render(request, 'register.html', { 'active': 'register', "form": form }, status=500)
             else:
-                return render(request, 'register.html', { 'active': 'register', "form": form }, status=500)
+                return render(request, 'register.html', { 'active': 'register', 'form': form, 'error_message': 'Dados inválidos!' }, status=400)                
         else:
             return render(request, 'register.html', { 'active': 'register', 'form': form, 'error_message': 'Dados inválidos!' }, status=400)
     else:
