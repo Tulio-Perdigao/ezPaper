@@ -53,45 +53,45 @@ class UsuarioTestCase(TestCase):
         response = register(request)        
         self.assertEqual(response.status_code, 400)
     
-    def test_invalid_telephone(self):
-        post_data = {
-            'username': 'Pedro',
-            'email': 'pedro@wisenet.inf.br',            
-            'password': 'nipsinflames',
-            'horario': self.horario
-        }
-        request = self.factory.post('/register', post_data)
-        response = register(request)        
-        self.assertEqual(response.status_code, 201)
-    
     def test_invalid_password(self):
         post_data = {
             'username': 'Pedro',
             'email': 'pedro@wisenet.inf.br',            
-            'password': 'nipsinflames',
+            'password': '123',
             'horario': self.horario
         }
         request = self.factory.post('/register', post_data)
         response = register(request)        
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 400)
     
     def test_invalid_horario(self):
         post_data = {
             'username': 'Pedro',
             'email': 'pedro@wisenet.inf.br',            
             'password': 'nipsinflames',
-            'horario': self.horario
+            'horario': -1
         }
         request = self.factory.post('/register', post_data)
         response = register(request)        
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 400)
 
-    '''def test_unique_username(self):
-        try:
-            user1 = Usuario.objects.create(username="Pedro", email="pedro@wisenet.inf.br", telephone="31993811533", password="nipsinflames", horario=self.horario1)
-            user2 = Usuario.objects.create(username="Pedro", email="tulio@mitre.perd.br", telephone="31988888888", password="tuliotulio", horario=self.horario2)
-        except IntegrityError:
-            self.fail('Os nomes de usuário devem ser únicos!')    '''
+    def test_unique_username(self):
+        post_data = {
+            'username': 'Pedro',
+            'email': 'pedro@wisenet.inf.br',
+            'password': 'nipsinflames',
+            'horario': -1
+        }
+        post_data2 = {
+            'username': 'Pedro',
+            'email': 'pedro@wisenet.inf.brr',
+            'password': 'nipsinflamesr',
+            'horario': -2
+        }        
+        request1 = self.factory.post('/register', post_data)
+        response1 = register(request1)
+        request2 = self.factory.post('/register', post_data2)
+        response2 = register(request2)        
 
 class HorarioTestCase(TestCase):
     def setUp(self):
