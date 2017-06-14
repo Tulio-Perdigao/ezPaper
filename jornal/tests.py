@@ -80,19 +80,20 @@ class UsuarioTestCase(TestCase):
             'username': 'Pedro',
             'email': 'pedro@wisenet.inf.br',
             'password': 'nipsinflames',
-            'horario': -1
+            'horario': self.horario
         }
         post_data2 = {
             'username': 'Pedro',
             'email': 'pedro@wisenet.inf.brr',
             'password': 'nipsinflamesr',
-            'horario': -2
+            'horario': self.horario
         }        
         request1 = self.factory.post('/register', post_data)
         response1 = register(request1)
         request2 = self.factory.post('/register', post_data2)
-        response2 = register(request2)        
-        self.assertEqual(response2.context['error_message'], 'Dados inválidos!')        
+        response2 = register(request2)
+        self.assertEqual(response1.status_code, 201)
+        self.assertEqual(response2.status_code, 400)
 
 class HorarioTestCase(TestCase):
     def setUp(self):

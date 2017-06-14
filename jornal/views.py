@@ -20,6 +20,7 @@ def register(request):
                 horario = form.cleaned_data['horario']
 
                 hor = Horario.objects.get(id=horario.id)
+                print(hor)
 
                 if not set('#$"\'+={}[]%¨&*()/\\.,;?').intersection(username) and not set('@').intersection(username) and len(password) > 5 and hor:
                     user = Usuario.objects.create_user(username=username, email=email, password=password)
