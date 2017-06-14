@@ -53,19 +53,18 @@ def register_worktime(request):
 
             if horaInicio >= horaFim:
                 return render(request, 'register_worktime.html', { 'active': 'register_worktime', "form": form, 'error_message': 'Horário inválido!' }, status=500)
-            else:
-                
+            else:                
                 if Horario.objects.filter(horaInicio=horaInicio, horaFim=horaFim).exists():
                     return render(request, 'register_worktime.html', { 'active': 'register_worktime', "form": form, 'error_message': 'Horário já cadastrado!' }, status=500)
                 else:
-                    if horario is not None:                
-                        horario.save()
+                    horario.save()
+                    if horario is not None:                        
                         return render(request, 'index.html', { 'active': 'index' }, status=201)
                     else:
                         return render(request, 'register_worktime.html', { 'active': 'register_worktime', "form": form }, status=500)
                     
     else:
-        return render(request, 'register_worktime.html', { 'active': 'register_worktime', "form": form }, status=400)    
+        return render(request, 'register_worktime.html', { 'active': 'register_worktime', "form": form }, status=200)    
 
 def user_list(request):
     users = Usuario.objects.all()
