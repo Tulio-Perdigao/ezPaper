@@ -1,5 +1,5 @@
 from django.test import TestCase
-from django.test.client import RequestFactory
+from django.test.client import RequestFactory, Client
 from django.db.utils import IntegrityError
 from .models import Usuario, Horario
 from .views import *
@@ -80,18 +80,36 @@ class UsuarioTestCase(TestCase):
             'username': 'Pedro',
             'email': 'pedro@wisenet.inf.br',
             'password': 'nipsinflames',
-            'horario': -1
+            'horario': self.horario
         }
         post_data2 = {
             'username': 'Pedro',
             'email': 'pedro@wisenet.inf.brr',
             'password': 'nipsinflamesr',
-            'horario': -2
+            'horario': self.horario
         }        
         request1 = self.factory.post('/register', post_data)
         response1 = register(request1)
         request2 = self.factory.post('/register', post_data2)
-        response2 = register(request2)        
+        response2 = register(request2)
+        self.assertEqual(response1.status_code, 201)
+        self.assertEqual(response2.status_code, 400)
+
+    def test_stress_test(self):
+        post_data = {
+            'username': 'Pedro',
+            'email': 'pedro@wisenet.inf.br',
+            'password': 'nipsinflames',
+            'horario': self.horario
+        }        
+        for i in range(0, 1000):
+            post_data['username'] += str(i)
+            request1 = self.factory.post('/register', post_data)
+            response1 = register(request1)
+
+        self.assertEqual(i, 999)
+            
+                    
 
 class HorarioTestCase(TestCase):
     def setUp(self):
