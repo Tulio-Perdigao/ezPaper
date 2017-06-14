@@ -13,8 +13,7 @@ class UsuarioTestCase(TestCase):
     def test_can_create(self):        
         post_data = {
             'username': 'Pedro',
-            'email': 'pedro@wisenet.inf.br',
-            'telephone': '31993811533',
+            'email': 'pedro@wisenet.inf.br',            
             'password': 'nipsinflames',
             'horario': self.horario
         }
@@ -24,8 +23,7 @@ class UsuarioTestCase(TestCase):
 
     def test_missing_field(self):
         post_data = {
-            'username': 'Pedro',
-            'email': 'pedro@wisenet.inf.br',            
+            'username': 'Pedro',            
             'password': 'nipsinflames',
             'horario': self.horario
         }
@@ -35,33 +33,30 @@ class UsuarioTestCase(TestCase):
 
     def test_invalid_username(self):
         post_data = {
-            'username': '"2#21',
-            'email': 'pedro@wisenet.inf.br',
-            'telephone': '31993811533',
+            'username': '#@*#&(',
+            'email': 'pedro@wisenet.inf.br',            
             'password': 'nipsinflames',
             'horario': self.horario
         }
         request = self.factory.post('/register', post_data)
         response = register(request)        
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 400)
     
     def test_invalid_email(self):
         post_data = {
             'username': 'Pedro',
-            'email': 'pedro@wisenet.inf.br',
-            'telephone': '31993811533',
+            'email': 'pedrowisenet.inf.br',            
             'password': 'nipsinflames',
             'horario': self.horario
         }
         request = self.factory.post('/register', post_data)
         response = register(request)        
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 400)
     
     def test_invalid_telephone(self):
         post_data = {
             'username': 'Pedro',
-            'email': 'pedro@wisenet.inf.br',
-            'telephone': '31993811533',
+            'email': 'pedro@wisenet.inf.br',            
             'password': 'nipsinflames',
             'horario': self.horario
         }
@@ -72,8 +67,7 @@ class UsuarioTestCase(TestCase):
     def test_invalid_password(self):
         post_data = {
             'username': 'Pedro',
-            'email': 'pedro@wisenet.inf.br',
-            'telephone': '31993811533',
+            'email': 'pedro@wisenet.inf.br',            
             'password': 'nipsinflames',
             'horario': self.horario
         }
@@ -84,8 +78,7 @@ class UsuarioTestCase(TestCase):
     def test_invalid_horario(self):
         post_data = {
             'username': 'Pedro',
-            'email': 'pedro@wisenet.inf.br',
-            'telephone': '31993811533',
+            'email': 'pedro@wisenet.inf.br',            
             'password': 'nipsinflames',
             'horario': self.horario
         }

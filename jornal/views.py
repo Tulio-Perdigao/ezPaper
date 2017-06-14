@@ -18,11 +18,11 @@ def register(request):
             password = form.cleaned_data['password']
             horario = form.cleaned_data['horario']            
             
-            if not re.match(r'^\w+$"#_\+=[]{},.;/:\\@%&', s):                
+            if not set('#$"\'+={}[]%¨&*()/\\.,;?').intersection(username) or not '@'.intersection(username):
                 user = Usuario.objects.create_user(username=username, email=email, password=password)
                 user.horario = horario
                 user.save()
-                user = authenticate(username=username, password=password)                
+                user = authenticate(username=username, password=password)
                 if user is not None:
                     if user.is_active:
                         return render(request, 'index.html', { 'active': 'index' }, status=201)
