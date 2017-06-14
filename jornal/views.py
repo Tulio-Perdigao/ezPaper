@@ -3,6 +3,8 @@ from django.shortcuts import render
 from .forms import *
 from .models import *
 
+import re
+
 # Create your views here.
 def index(request):    
     return render(request, 'index.html', { 'active': 'index' })
@@ -17,6 +19,8 @@ def register(request):
             horario = form.cleaned_data['horario']
             telephone = form.cleaned_data['telephone']
             
+            if re.match(r'^\w+$"#_\+=[]{},.;/:\\@%&', s):
+
             user = Usuario.objects.create_user(username=username, email=email, password=password)
             user.horario = horario
             user.telephone = telephone
@@ -24,15 +28,13 @@ def register(request):
             user = authenticate(username=username, password=password)                
             if user is not None:
                 if user.is_active:
-                    return render(request, 'index.html', { 'active': 'index' })
+                    return render(request, 'index.html', { 'active': 'index' }, status=201)
             else:
-                return render(request, 'index.html', { 'active': 'index', "form": form })
+                return render(request, 'register.html', { 'active': 'register', "form": form }, status=500)
         else:
-            return render(request, 'register.html', { 'active': 'register', 'form': form, 'error_message': 'Dados inválidos!' })
+            return render(request, 'register.html', { 'active': 'register', 'form': form, 'error_message': 'Dados inválidos!' }, status=400)
     else:
-        return render(request, 'register.html', { 'active': 'register', "form": form })
-
-    return render(request, 'register.html', { 'active': 'register', 'form': form })
+        return render(request, 'register.html', { 'active': 'register', "form": form }, status=200)    
 
 def register_worktime(request):
     form = HorarioForm(request.POST or None)
@@ -47,13 +49,11 @@ def register_worktime(request):
             horario.save()
 
             if horario is not None:                
-                return render(request, 'index.html', { 'active': 'index' })
+                return render(request, 'index.html', { 'active': 'index' }, status=201)
             else:
-                return render(request, 'register_worktime.html', { 'active': 'register_worktime', "form": form })    
+                return render(request, 'register_worktime.html', { 'active': 'register_worktime', "form": form }, status=500)
     else:
-        return render(request, 'register_worktime.html', { 'active': 'register_worktime', "form": form })
-
-    return render(request, 'register_worktime.html', { 'active': 'register_worktime', 'form': form })
+        return render(request, 'register_worktime.html', { 'active': 'register_worktime', "form": form }, status=400)    
 
 def user_list(request):
     users = Usuario.objects.all()
