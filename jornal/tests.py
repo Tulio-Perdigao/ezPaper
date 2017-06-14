@@ -53,38 +53,27 @@ class UsuarioTestCase(TestCase):
         response = register(request)        
         self.assertEqual(response.status_code, 400)
     
-    def test_invalid_telephone(self):
-        post_data = {
-            'username': 'Pedro',
-            'email': 'pedro@wisenet.inf.br',            
-            'password': 'nipsinflames',
-            'horario': self.horario
-        }
-        request = self.factory.post('/register', post_data)
-        response = register(request)        
-        self.assertEqual(response.status_code, 201)
-    
     def test_invalid_password(self):
         post_data = {
             'username': 'Pedro',
             'email': 'pedro@wisenet.inf.br',            
-            'password': 'nipsinflames',
+            'password': '123',
             'horario': self.horario
         }
         request = self.factory.post('/register', post_data)
         response = register(request)        
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 400)
     
     def test_invalid_horario(self):
         post_data = {
             'username': 'Pedro',
             'email': 'pedro@wisenet.inf.br',            
             'password': 'nipsinflames',
-            'horario': self.horario
+            'horario': -1
         }
         request = self.factory.post('/register', post_data)
         response = register(request)        
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 400)
 
     '''def test_unique_username(self):
         try:

@@ -16,9 +16,11 @@ def register(request):
             username = form.cleaned_data['username']                
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            horario = form.cleaned_data['horario']            
-            
-            if not set('#$"\'+={}[]%¨&*()/\\.,;?').intersection(username) or not '@'.intersection(username):
+            horario = form.cleaned_data['horario']
+
+            hor = Horario.objects.get(id=horario.id)            
+
+            if not set('#$"\'+={}[]%¨&*()/\\.,;?').intersection(username) and not set('@').intersection(username) and len(password) > 5 and hor:
                 user = Usuario.objects.create_user(username=username, email=email, password=password)
                 user.horario = horario
                 user.save()
