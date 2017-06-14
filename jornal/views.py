@@ -19,8 +19,7 @@ def register(request):
                 password = form.cleaned_data['password']
                 horario = form.cleaned_data['horario']
 
-                hor = Horario.objects.get(id=horario.id)
-                print(hor)
+                hor = Horario.objects.get(id=horario.id)                
 
                 if not set('#$"\'+={}[]%¨&*()/\\.,;?').intersection(username) and not set('@').intersection(username) and len(password) > 5 and hor:
                     user = Usuario.objects.create_user(username=username, email=email, password=password)
@@ -33,7 +32,7 @@ def register(request):
                     else:
                         return render(request, 'register.html', { 'active': 'register', "form": form }, status=500)
                 else:
-                    return render(request, 'register.html', { 'active': 'register', 'form': form, 'error_message': 'Dados inválidos!' }, status=400)                
+                    return render(request, 'register.html', { 'active': 'register', 'form': form, 'error_message': 'Dados inválidos!' }, status=400)
             else:
                 return render(request, 'register.html', { 'active': 'register', 'form': form, 'error_message': 'Formulário inválido!' }, status=400)
         except Exception as e:
