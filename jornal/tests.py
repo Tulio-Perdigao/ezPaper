@@ -15,6 +15,7 @@ class UsuarioTestCase(TestCase):
             'username': 'Pedro',
             'email': 'pedro@wisenet.inf.br',            
             'password': 'nipsinflames',
+            'funcao': 'Jornalista',
             'horario': self.horario
         }
         request = self.factory.post('/register', post_data)
@@ -25,6 +26,7 @@ class UsuarioTestCase(TestCase):
         post_data = {
             'username': 'Pedro',            
             'password': 'nipsinflames',
+            'funcao': 'Jornalista',
             'horario': self.horario
         }
         request = self.factory.post('/register', post_data)
@@ -36,6 +38,7 @@ class UsuarioTestCase(TestCase):
             'username': '#@*#&(',
             'email': 'pedro@wisenet.inf.br',            
             'password': 'nipsinflames',
+            'funcao': 'Jornalista',
             'horario': self.horario
         }
         request = self.factory.post('/register', post_data)
@@ -47,6 +50,7 @@ class UsuarioTestCase(TestCase):
             'username': 'Pedro',
             'email': 'pedrowisenet.inf.br',            
             'password': 'nipsinflames',
+            'funcao': 'Jornalista',
             'horario': self.horario
         }
         request = self.factory.post('/register', post_data)
@@ -58,6 +62,7 @@ class UsuarioTestCase(TestCase):
             'username': 'Pedro',
             'email': 'pedro@wisenet.inf.br',            
             'password': '123',
+            'funcao': 'Jornalista',
             'horario': self.horario
         }
         request = self.factory.post('/register', post_data)
@@ -69,7 +74,20 @@ class UsuarioTestCase(TestCase):
             'username': 'Pedro',
             'email': 'pedro@wisenet.inf.br',            
             'password': 'nipsinflames',
+            'funcao': 'Jornalista',
             'horario': -1
+        }
+        request = self.factory.post('/register', post_data)
+        response = register(request)        
+        self.assertEqual(response.status_code, 400)
+
+    def test_invalid_funcao(self):
+        post_data = {
+            'username': 'Pedro',
+            'email': 'pedro@wisenet.inf.br',            
+            'password': 'nipsinflames',
+            'funcao': 'ginecologista',
+            'horario': self.horario
         }
         request = self.factory.post('/register', post_data)
         response = register(request)        
@@ -80,12 +98,14 @@ class UsuarioTestCase(TestCase):
             'username': 'Pedro',
             'email': 'pedro@wisenet.inf.br',
             'password': 'nipsinflames',
+            'funcao': 'Jornalista',
             'horario': self.horario
         }
         post_data2 = {
             'username': 'Pedro',
             'email': 'pedro@wisenet.inf.brr',
             'password': 'nipsinflamesr',
+            'funcao': 'Jornalista',
             'horario': self.horario
         }        
         request1 = self.factory.post('/register', post_data)
@@ -100,6 +120,7 @@ class UsuarioTestCase(TestCase):
             'username': 'Pedro',
             'email': 'pedro@wisenet.inf.br',
             'password': 'nipsinflames',
+            'funcao': 'Jornalista',
             'horario': self.horario
         }        
         for i in range(0, 1000):
@@ -188,6 +209,7 @@ class UsuarioHorarioTestCase(TestCase):
             'username': 'Pedro',
             'email': 'pedro@wisenet.inf.br',
             'password': 'nipsinflames',
+            'funcao': 'Jornalista',
             'horario': horario
         }
         request2 = self.factory.post('/register', post_data2)
