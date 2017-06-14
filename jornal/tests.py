@@ -168,3 +168,30 @@ class HorarioTestCase(TestCase):
         request = self.factory.post('/register_worktime', post_data)
         response = register_worktime(request)
         self.assertEqual(response.status_code, 500)
+
+# teste de integração
+class UsuarioHorarioTestCase(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        
+    def test_integration_test(self):
+        post_data = {                        
+            'horaInicio': 9,
+            'horaFim': 18
+        }
+           
+        request = self.factory.post('/register_worktime', post_data)
+        response = register(request)        
+        self.assertEqual(response.status_code, 201)
+        horario = Horario.objects.get(horaInicio=9, horaFim=18)
+
+        post_data2 = {
+            'username': 'Pedro',
+            'email': 'pedro@wisenet.inf.br',
+            'password': 'nipsinflames',
+            'horario': horario
+        }
+        request2 = self.factory.post('/register', post_data2)
+        response2 = register(request2)
+        
+        self.assertEqual(response2.status_code, 201)
