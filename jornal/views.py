@@ -9,31 +9,34 @@ import re
 def index(request):    
     return render(request, 'index.html', { 'active': 'index' })
 
-def register(request):
-    form = UserForm(request.POST or None)    
+def register(request):    
+    form = UserForm(request.POST or None)
     if request.method == 'POST':
-        if form.is_valid():                
-            username = form.cleaned_data['username']                
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            horario = form.cleaned_data['horario']
+        try:
+            if form.is_valid():
+                username = form.cleaned_data['username']
+                email = form.cleaned_data['email']
+                password = form.cleaned_data['password']
+                horario = form.cleaned_data['horario']
 
-            hor = Horario.objects.get(id=horario.id)            
+                hor = Horario.objects.get(id=horario.id)
 
-            if not set('#$"\'+={}[]%¨&*()/\\.,;?').intersection(username) and not set('@').intersection(username) and len(password) > 5 and hor:
-                user = Usuario.objects.create_user(username=username, email=email, password=password)
-                user.horario = horario
-                user.save()
-                user = authenticate(username=username, password=password)
-                if user is not None:
-                    if user.is_active:
-                        return render(request, 'index.html', { 'active': 'index' }, status=201)
+                if not set('#$"\'+={}[]%¨&*()/\\.,;?').intersection(username) and not set('@').intersection(username) and len(password) > 5 and hor:
+                    user = Usuario.objects.create_user(username=username, email=email, password=password)
+                    user.horario = horario
+                    user.save()
+                    user = authenticate(username=username, password=password)
+                    if user is not None:
+                        if user.is_active:
+                            return render(request, 'index.html', { 'active': 'index' }, status=201)
+                    else:
+                        return render(request, 'register.html', { 'active': 'register', "form": form }, status=500)
                 else:
-                    return render(request, 'register.html', { 'active': 'register', "form": form }, status=500)
+                    return render(request, 'register.html', { 'active': 'register', 'form': form, 'error_message': 'Dados inválidos!' }, status=400)                
             else:
-                return render(request, 'register.html', { 'active': 'register', 'form': form, 'error_message': 'Dados inválidos!' }, status=400)                
-        else:
-            return render(request, 'register.html', { 'active': 'register', 'form': form, 'error_message': 'Dados inválidos!' }, status=400)
+                return render(request, 'register.html', { 'active': 'register', 'form': form, 'error_message': 'Formulário inválido!' }, status=400)
+        except Exception as e:
+            print(e)
     else:
         return render(request, 'register.html', { 'active': 'register', "form": form }, status=200)    
 

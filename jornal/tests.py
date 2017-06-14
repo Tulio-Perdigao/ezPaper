@@ -1,5 +1,5 @@
 from django.test import TestCase
-from django.test.client import RequestFactory
+from django.test.client import RequestFactory, Client
 from django.db.utils import IntegrityError
 from .models import Usuario, Horario
 from .views import *
@@ -92,6 +92,7 @@ class UsuarioTestCase(TestCase):
         response1 = register(request1)
         request2 = self.factory.post('/register', post_data2)
         response2 = register(request2)        
+        self.assertEqual(response2.context['error_message'], 'Dados inválidos!')        
 
 class HorarioTestCase(TestCase):
     def setUp(self):
